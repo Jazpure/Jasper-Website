@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabrication Projects — Jasper Curtis</title>
+<link rel="icon" href="images/cow-logo.png">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    /* ── Shared spacing scale ──────────────────────────────
+       Derived from the Figma frame and rounded to a
+       consistent rhythm, so every gap is a multiple of 4. */
+    --grid-gap:      44px;   /* between images in a row       */
+    --block-gap:     80px;   /* heading → its content         */
+    --text-gap:      100px;  /* images → body text            */
+    --section-gap:   140px;  /* between named sections        */
+    --gutter:        178px;  /* content indent beside heading */
+    --col:           991px;  /* content column width          */
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #fff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #000;
+    padding: 101px 0 160px;
+  }
+
+  /* ── Layout: headings sit in a left gutter beside the column ── */
+  .page {
+    width: min(calc(var(--gutter) + var(--col)), calc(100% - 64px));
+    margin: 0 auto;
+  }
+  .col { margin-left: var(--gutter); }
+
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  h2 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: normal;  /* Figma sets leading to normal, not a ratio */
+  }
+  p + p { margin-top: 1.4em; }
+
+  /* ── Outbound links: black, italic, underlined ── */
+  .col a,
+  .intro a {
+    color: inherit;
+    font-style: italic;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .col a:hover,
+  .intro a:hover { text-decoration-thickness: 2px; }
+  .col a:focus-visible,
+  .intro a:focus-visible { outline: 2px solid #000; outline-offset: 3px; }
+
+  .intro { margin-top: var(--block-gap); }
+
+  section {
+    margin-top: var(--section-gap);
+    /* clears the floating cow head when jumped to via anchor */
+    scroll-margin-top: 40px;
+  }
+
+  /* ── Two-column image grid ── */
+  .shots {
+    margin-top: var(--block-gap);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+  .shots img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .shots + p { margin-top: var(--text-gap); }
+
+  /* ── Cow head = home button, floats top-right while scrolling ── */
+  /* Adaptive logo: white artwork + difference blending inverts it against
+     whatever sits behind, per pixel. Black over the white/off-white page,
+     white over dark imagery or type, recomputed live while scrolling. */
+  .home-cow {
+    mix-blend-mode: difference;
+    position: fixed;
+    top: 28px;
+    right: 32px;
+    z-index: 10;
+    display: block;
+  }
+  .home-cow img {
+    width: 50px;
+    height: auto;
+    display: block;
+  }
+  /* Where supported, threshold the backdrop inside the cow silhouette instead
+     of inverting it: gives true black/white rather than a complementary tint
+     over saturated colour. Falls back to the difference blend above. */
+  @supports ((backdrop-filter: invert(1)) or (-webkit-backdrop-filter: invert(1))) and (mask-image: url(x.png)) {
+    .home-cow { mix-blend-mode: normal; }
+    .home-cow img { visibility: hidden; }
+    .home-cow::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      -webkit-backdrop-filter: grayscale(1) contrast(2000%) invert(1);
+      backdrop-filter: grayscale(1) contrast(2000%) invert(1);
+      -webkit-mask: url(images/cow-logo-white.png) center / contain no-repeat;
+      mask: url(images/cow-logo-white.png) center / contain no-repeat;
+    }
+  }
+  .home-cow:hover img { transform: rotate(-8deg); }
+  .home-cow:focus-visible { outline: 2px solid #000; outline-offset: 4px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .home-cow img { transition: transform 0.2s ease; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  /* ── Collapse the heading gutter before it starts squeezing text ── */
+  @media (max-width: 1180px) {
+    .col { margin-left: 0; }
+    section h2 { margin-left: 0; }
+  }
+
+  @media (max-width: 700px) {
+    :root {
+      --grid-gap:    20px;
+      --block-gap:   40px;
+      --text-gap:    48px;
+      --section-gap: 80px;
+    }
+    body { padding: 40px 0 90px; }
+    .page { width: calc(100% - 40px); }
+    h1, h2 { font-size: 24px; }
+    /* one image per row — a 2-up grid is too small to read the work */
+    .shots { grid-template-columns: 1fr; }
+    p { font-size: 17px; line-height: 1.55; }
+    .home-cow { top: 22px; right: 20px; }
+    .home-cow img { width: 34px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="page">
+
+    <h1>Fabrication Work</h1>
+
+    <div class="col">
+      <p class="intro">As a creator I’m glad to have a background in fabrication. For much of my professional life I have worked to make the ideas of others corporeal. I now understand that the bridge between thought and reality is the space in which an idea gains an agency of its own. In other words the concessions made in the pursuit of original intention leads to some of the most beautiful and genuine aspects of a piece.</p>
+      <p>As I move towards creating my own work I hope to embrace constraints as a creative scaffold letting ideas breath in their most effective context.</p>
+    </div>
+
+    <section id="mel-kendrick">
+      <h2>Mel Kendrick</h2>
+      <div class="col">
+        <div class="shots">
+          <img src="images/mel-1.jpg" width="1074" height="1600" alt="Carved and painted wood sculpture on a yellow pedestal">
+          <img src="images/mel-2.jpg" width="1520" height="1600" alt="Wall-mounted relief in yellow, red and blue">
+          <img src="images/mel-3.jpg" width="1494" height="1600" alt="Cut and stacked wood forms against a white wall">
+          <img src="images/mel-4.jpg" width="1130" height="1600" alt="Faceted black sculpture stacked on a pale block">
+        </div>
+        <p>I had the pleasure of helping Mel prepare for his show <a href="https://www.davidnolangallery.com/artists/34-mel-kendrick/">Tilt</a> at David Nolan Gallery. Before working with Mel, I had spent time building decks in Upstate NY. Working on the show was a process of unlearning the standards of structural carpentry: from pressure treated wood and laser levels to mahogany and chainsaws. This isn’t to say the precision of traditional carpentry was lost, but rather that we were chasing form instead of function: poetry vs. prose.</p>
+        <p>Working with Mel bolstered my confidence as a maker. Coming from <a href="https://workartfab.com/">Workshop</a>, I was used to a way of working that was more standard, incremental, and supervised. Working with Mel still required precision, but I was more responsible for the decision making necessary to bring an idea into physical form. Those decisions were small, sometimes improvisational, sometimes creative, and they pushed me to trust myself.</p>
+      </div>
+    </section>
+
+    <section id="nick-cave">
+      <h2>Nick Cave</h2>
+      <div class="col">
+        <div class="shots">
+          <img src="images/nickcave-1.jpg" width="1200" height="1600" alt="Cast metal figure of Amalgam standing in the shop">
+          <img src="images/nickcave-2.jpg" width="1200" height="1600" alt="Second cast figure from Amalgam, rear view">
+        </div>
+        <p>I really treasured my time working on <a href="https://www.meijergardens.org/nickcave/">Amalgam</a> by Nick Cave. Firstly, it’s just so cool. It also tested me and the team at <a href="https://workartfab.com/">Workshop</a>. We cast, assembled, and finished the twenty six foot sculpture from scratch, using the whole kitchen sink, from gantries to AR goggles. Due to the scale, almost every task necessitated close collaboration; the effort we put in mirrored the herculean aspirations of the work.</p>
+      </div>
+    </section>
+
+    <section id="christopher-wool">
+      <h2>Christopher Wool</h2>
+      <div class="col">
+        <div class="shots">
+          <img src="images/wool-1.jpg" width="1600" height="1200" alt="Steel components laid out on the shop floor">
+          <img src="images/wool-2.jpg" width="1600" height="1200" alt="Fabricators working on a section of the sculpture">
+          <img src="images/wool-3.jpg" width="1600" height="1200" alt="Tangled steel and copper tubing mid-assembly">
+        </div>
+        <p>SC-038 was one of my first big projects at <a href="https://workartfab.com/">Workshop</a>. I cut my teeth welding upside down, sideways, and in body orientations that escape language. This project also introduced me to the use of AR in fabrication. Each segment of the sculpture could be oriented and attached according to the projection visible in real space through the goggles. Without this tool, the project would have required an unimaginable amount of measurement in three dimensions. I am also thankful to have worked with Joe Zito on this project; he became a mentor of mine and a good friend.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <a class="home-cow" href="index.html" aria-label="Home">
+    <img src="images/cow-logo-white.png" alt="">
+  </a>
+
+  <script>
+    /* Arriving from fabrication.html#nick-cave etc: browsers handle a
+       cross-document fragment unreliably when scroll-behavior is smooth
+       (the jump is simply dropped). Wait for load, so image heights are
+       settled, then place the section deterministically. Same-page anchor
+       clicks still animate via the CSS rule. */
+    if (location.hash && 'scrollRestoration' in history) {
+      /* otherwise a reload restores the old offset on top of our jump */
+      history.scrollRestoration = 'manual';
+    }
+    addEventListener('load', function () {
+      if (!location.hash) return;
+      var target;
+      try { target = document.querySelector(location.hash); } catch (e) { return; }
+      if (!target) return;
+
+      /* stop re-asserting the moment the reader takes over */
+      var cancelled = false;
+      ['wheel', 'touchstart', 'keydown'].forEach(function (evt) {
+        addEventListener(evt, function () { cancelled = true; }, { once: true, passive: true });
+      });
+
+      function jump() {
+        if (cancelled) return;
+        var root = document.documentElement;
+        var prev = root.style.scrollBehavior;
+        root.style.scrollBehavior = 'auto';
+        target.scrollIntoView();
+        root.style.scrollBehavior = prev;
+      }
+
+      jump();
+      /* a late reflow after load shifts the target, so re-assert once the
+         layout has settled — otherwise the heading lands just off-screen */
+      requestAnimationFrame(function () { requestAnimationFrame(jump); });
+      setTimeout(jump, 200);
+    });
+  </script>
+
+</body>
+</html>

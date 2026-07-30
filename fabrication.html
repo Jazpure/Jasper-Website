@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabrication — Jasper Curtis</title>
+<link rel="icon" href="images/cow-logo.png">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    /* Shared spacing scale — see fabrication-projects.html, photo.html */
+    --gutter: 4.6vw;
+    --stroke: #3c0a92;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #14100f;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  /* ── Full-bleed shop photo ── */
+  .bg {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+  }
+  /* Reproduces the Figma crop exactly: in a 1440×1024 frame the photo is
+     drawn 2344px wide (162.8%) at offset −452/−230, i.e. anchored on the
+     point 50% across and 42.2% down the image. */
+  .bg img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 162.8%;
+    height: auto;
+    transform: translate(-50%, -42.2%);
+    display: block;
+  }
+  /* Portrait/narrow: drive the same anchor off height so it still covers */
+  @media (max-aspect-ratio: 5 / 6) {
+    .bg img { width: auto; height: 122%; }
+  }
+
+  /* ── Title + section links ── */
+  .hero {
+    position: relative;
+    z-index: 5;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 4.7vh var(--gutter) 6vh;
+  }
+
+  h1 {
+    font-size: clamp(38px, 6.7vw, 96px);
+    font-weight: 700;
+    line-height: 1.05;
+    color: #fdf8f8;
+    -webkit-text-stroke: 2px var(--stroke);
+    letter-spacing: -0.01em;
+  }
+
+  .sections {
+    margin-top: clamp(40px, 12vh, 130px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(28px, 8.2vh, 84px);
+    align-items: flex-start;
+    padding-left: 1.5vw;
+  }
+  .sections a {
+    font-size: clamp(22px, 3.5vw, 50px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #fffdfd;
+    -webkit-text-stroke: 1.5px var(--stroke);
+    text-decoration: none;
+  }
+  .sections a:hover {
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 3px;
+  }
+  .sections a:focus-visible {
+    outline: 2px solid #fffdfd;
+    outline-offset: 6px;
+  }
+
+  /* ── Cow head = home button, floats top-right ── */
+  /* Adaptive logo: white artwork + difference blending inverts it against
+     whatever sits behind, per pixel. Black over the white/off-white page,
+     white over dark imagery or type, recomputed live while scrolling. */
+  .home-cow {
+    mix-blend-mode: difference;
+    position: fixed;
+    top: 28px;
+    right: 32px;
+    z-index: 10;
+    display: block;
+  }
+  .home-cow img {
+    width: 50px;
+    height: auto;
+    display: block;
+  }
+  /* Where supported, threshold the backdrop inside the cow silhouette instead
+     of inverting it: gives true black/white rather than a complementary tint
+     over saturated colour. Falls back to the difference blend above. */
+  @supports ((backdrop-filter: invert(1)) or (-webkit-backdrop-filter: invert(1))) and (mask-image: url(x.png)) {
+    .home-cow { mix-blend-mode: normal; }
+    .home-cow img { visibility: hidden; }
+    .home-cow::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      -webkit-backdrop-filter: grayscale(1) contrast(2000%) invert(1);
+      backdrop-filter: grayscale(1) contrast(2000%) invert(1);
+      -webkit-mask: url(images/cow-logo-white.png) center / contain no-repeat;
+      mask: url(images/cow-logo-white.png) center / contain no-repeat;
+    }
+  }
+  .home-cow:hover img { transform: rotate(-8deg); }
+  .home-cow:focus-visible { outline: 2px solid #fffdfd; outline-offset: 4px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .home-cow img { transition: transform 0.2s ease; }
+  }
+
+  @media (max-width: 700px) {
+    .hero { padding: 24px 24px 40px; }
+    /* keep the title clear of the floating cow head */
+    h1 { -webkit-text-stroke-width: 1.2px; padding-right: 52px; }
+    .sections a { -webkit-text-stroke-width: 1px; }
+    .sections { padding-left: 0; }
+    .home-cow { top: 22px; right: 20px; }
+    .home-cow img { width: 34px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg">
+    <img src="images/fab-hero.jpg" alt="Bent copper and steel tubing laid out across a fabrication shop floor">
+  </div>
+
+  <div class="hero">
+    <h1>Fabrication work</h1>
+
+    <nav class="sections">
+      <a href="fabrication-projects.html#nick-cave">Nick Cave</a>
+      <a href="fabrication-projects.html#mel-kendrick">Mel Kendrick</a>
+      <a href="fabrication-projects.html#christopher-wool">Christopher Wool</a>
+    </nav>
+  </div>
+
+  <a class="home-cow" href="index.html" aria-label="Home">
+    <img src="images/cow-logo-white.png" alt="">
+  </a>
+
+</body>
+</html>

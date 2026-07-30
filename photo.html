@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo — Jasper Curtis</title>
+<link rel="icon" href="images/cow-logo.png">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    /* ── Spacing scale ─────────────────────────────────────
+       The Figma frame varies these a little from section to
+       section (label→image 19–35, image→label 99–177); these
+       are the rounded values, applied consistently. */
+    --label-gap:   20px;   /* label → the image it names   */
+    --item-gap:    100px;  /* image → the next label       */
+    --blurb-gap:   40px;   /* last image → section blurb   */
+    --section-gap: 200px;  /* between sections             */
+    --measure:     621px;  /* blurb line length            */
+    --col:         1356px; /* content column               */
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #fff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #000;
+    padding: 54px 0 200px;
+  }
+
+  .wrap { width: min(var(--col), calc(100% - 80px)); margin: 0 auto; }
+
+  /* ── Header ── */
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  nav {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  nav a {
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 1.3;
+    color: #000;
+    text-decoration: none;
+  }
+  nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  nav a:focus-visible { outline: 2px solid #000; outline-offset: 4px; }
+
+  /* ── Sections ── */
+  section { scroll-margin-top: 40px; }
+  section:first-of-type { margin-top: var(--section-gap); }
+  section + section { margin-top: var(--section-gap); }
+
+  /* ── Figures: centred, label flush with the image's left edge ── */
+  figure { margin: 0 auto; }
+  figure + figure { margin-top: var(--item-gap); }
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: var(--label-gap);
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 1.2;
+  }
+  /* print dimensions, set at the image's right edge */
+  .dim { font-size: 11px; font-weight: 300; white-space: nowrap; }
+
+  .blurb {
+    max-width: var(--measure);
+    margin: var(--blurb-gap) auto 0;
+    /* Figma sets these 12px Thin; at that size and weight they were the
+       faintest text on the site, so they run a step up from the frame. */
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  /* ── Image widths, as a share of the column (from the 1440 frame) ── */
+  .w-richie   { width: 100%;   }  /* 1356 */
+  .w-marshall { width: 75.6%;  }  /* 1025 */
+  .w-target   { width: 45.7%;  }  /*  620 */
+  .w-dylan    { width: 67.0%;  }  /*  908 — from the label's left edge at 266 */
+  .w-june     { width: 58.8%;  }  /*  798 */
+  .w-ro       { width: 68.1%;  }  /*  923 */
+  .w-bone     { width: 61.1%;  }  /*  828 */
+
+  /* ── Cow head = home button, floats top-right while scrolling ── */
+  /* Adaptive logo: white artwork + difference blending inverts it against
+     whatever sits behind, per pixel. Black over the white/off-white page,
+     white over dark imagery or type, recomputed live while scrolling. */
+  .home-cow {
+    mix-blend-mode: difference;
+    position: fixed;
+    top: 28px;
+    right: 32px;
+    z-index: 10;
+    display: block;
+  }
+  .home-cow img {
+    width: 50px;
+    height: auto;
+    display: block;
+  }
+  /* Where supported, threshold the backdrop inside the cow silhouette instead
+     of inverting it: gives true black/white rather than a complementary tint
+     over saturated colour. Falls back to the difference blend above. */
+  @supports ((backdrop-filter: invert(1)) or (-webkit-backdrop-filter: invert(1))) and (mask-image: url(x.png)) {
+    .home-cow { mix-blend-mode: normal; }
+    .home-cow img { visibility: hidden; }
+    .home-cow::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      -webkit-backdrop-filter: grayscale(1) contrast(2000%) invert(1);
+      backdrop-filter: grayscale(1) contrast(2000%) invert(1);
+      -webkit-mask: url(images/cow-logo-white.png) center / contain no-repeat;
+      mask: url(images/cow-logo-white.png) center / contain no-repeat;
+    }
+  }
+  .home-cow:hover img { transform: rotate(-8deg); }
+  .home-cow:focus-visible { outline: 2px solid #000; outline-offset: 4px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .home-cow img { transition: transform 0.2s ease; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  /* ── Narrow: the smaller plates get too small to read, so widen them ── */
+  @media (max-width: 900px) {
+    :root {
+      --item-gap:    64px;
+      --section-gap: 120px;
+      --blurb-gap:   32px;
+    }
+    .w-target { width: 74%; }
+    .w-june, .w-ro, .w-bone, .w-marshall { width: 100%; }
+  }
+
+  @media (max-width: 600px) {
+    :root {
+      --label-gap:   14px;
+      --item-gap:    48px;
+      --section-gap: 88px;
+    }
+    body { padding: 32px 0 100px; }
+    .wrap { width: calc(100% - 40px); }
+    h1 { font-size: 26px; }
+    nav a { font-size: 16px; }
+    figcaption { font-size: 16px; }
+    .w-target { width: 100%; }
+    .home-cow { top: 22px; right: 20px; }
+    .home-cow img { width: 34px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <header>
+      <h1>Photo</h1>
+      <nav>
+        <a href="#flowers">Flowers</a>
+        <a href="#targets">Target Series</a>
+        <a href="#broken-bone">Find the broken bone</a>
+      </nav>
+    </header>
+
+    <section id="flowers">
+      <figure class="w-richie">
+        <figcaption><span>Richie</span></figcaption>
+        <img src="images/richie.jpg" width="1800" height="1227" alt="Figure in a white shirt standing among tall grass and dandelion seed heads">
+      </figure>
+      <figure class="w-marshall">
+        <figcaption><span>Marshall</span></figcaption>
+        <img src="images/marshall.jpg" width="1300" height="2032" alt="Shoulder and neck scattered with pressed flowers">
+      </figure>
+      <p class="blurb">Flowers explores photography as a practice of object making. Each of the shots consists of multiple print outs submerged in water using real flowers- photos of photos.</p>
+    </section>
+
+    <section id="targets">
+      <figure class="w-target">
+        <figcaption><span>target 1</span><span class="dim">17x25 in</span></figcaption>
+        <img src="images/cyan-1.jpg" width="1150" height="1515" alt="Cyanotype: masked figure on a shooting target">
+      </figure>
+      <figure class="w-target">
+        <figcaption><span>target 2</span><span class="dim">17x25 in</span></figcaption>
+        <img src="images/cyan-2.jpg" width="1150" height="1522" alt="Cyanotype: figure with camera behind a bullseye">
+      </figure>
+      <figure class="w-target">
+        <figcaption><span>target 3</span><span class="dim">17x25 in</span></figcaption>
+        <img src="images/cyan-3.jpg" width="1150" height="1534" alt="Cyanotype: snarling portrait over an oval target">
+      </figure>
+      <figure class="w-target">
+        <figcaption><span>target 4</span><span class="dim">17x25 in</span></figcaption>
+        <img src="images/cyan-4.jpg" width="1150" height="1592" alt="Cyanotype: portrait surrounded by duck targets">
+      </figure>
+      <figure class="w-target">
+        <figcaption><span>target 5</span><span class="dim">17x25 in</span></figcaption>
+        <img src="images/cyan-5.jpg" width="1150" height="1602" alt="Cyanotype: upward gaze with a bullseye at the throat">
+      </figure>
+      <figure class="w-target">
+        <figcaption><span>target 6</span><span class="dim">17x25 in</span></figcaption>
+        <img src="images/cyan-6.jpg" width="1150" height="1537" alt="Cyanotype: smiling portrait scattered with bullseyes">
+      </figure>
+      <figure class="w-target">
+        <figcaption><span>target 7</span><span class="dim">17x25 in</span></figcaption>
+        <img src="images/cyan-7.jpg" width="1150" height="1560" alt="Cyanotype: face centred on a scorekeeper target">
+      </figure>
+      <p class="blurb">A series of self-portrait cyanotypes targets. Enjoyed immensely by my friends as shooting targets muddying the definitions between photo and object, what is serious and what is light.</p>
+    </section>
+
+    <section id="portraits">
+      <figure class="w-dylan">
+        <figcaption><span>Dylan</span></figcaption>
+        <img src="images/dylan.jpg" width="1350" height="900" alt="Shirtless figure crouching with a spade in tall roadside grass, bicycle leaning against a signpost">
+      </figure>
+      <figure class="w-june">
+        <figcaption><span>June</span></figcaption>
+        <img src="images/june.jpg" width="1300" height="1031" alt="Black and white interior: figure seated in a darkened room beside a doorway">
+      </figure>
+      <figure class="w-ro">
+        <figcaption><span>Ro</span></figcaption>
+        <img src="images/ro.jpg" width="1200" height="771" alt="Black and white interior: figures at a table beneath hanging lamps">
+      </figure>
+    </section>
+
+    <section id="broken-bone">
+      <figure class="w-bone">
+        <figcaption><span>Find the Broken bone</span><span class="dim">72x36in</span></figcaption>
+        <img src="images/bone-1.jpg" width="1100" height="1731" alt="Hanging textile with cut-letter poem, installation view">
+      </figure>
+      <figure class="w-bone">
+        <img src="images/bone-2.jpg" width="1400" height="788" alt="Textile detail: watercolour grid and cut letters">
+      </figure>
+      <figure class="w-bone">
+        <figcaption><span>Transcript:</span></figcaption>
+        <img src="images/bone-3.jpg" width="1400" height="788" alt="Textile detail, second view of the watercolour grid">
+      </figure>
+      <p class="blurb">Find the broken bone is a project from the early days of AI, when it was still pretty hallucinatory. This project highlights its unusual use of language generated out of one phrase: find the broken bone. The colors CMYK reflect the standard of printing from the web, bridging the divide between digital and physical, intention and its unchecked advance into fantasy.</p>
+    </section>
+
+  </div>
+
+  <a class="home-cow" href="index.html" aria-label="Home">
+    <img src="images/cow-logo-white.png" alt="">
+  </a>
+
+</body>
+</html>

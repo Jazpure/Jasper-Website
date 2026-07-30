@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Jasper Curtis</title>
+<link rel="icon" href="images/cow-logo.png">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #14100f;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  /* ── Full-bleed photo ── */
+  .bg {
+    position: fixed;
+    inset: 0;
+  }
+  .bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Figma runs the 1537px-wide photo flush to the left of the 1440 frame */
+    object-position: 0% 50%;
+    display: block;
+  }
+
+  /* ── Email: click to copy ── */
+  .email {
+    position: fixed;
+    top: 5.66%;    /* 58 / 1024 */
+    left: 5.56%;   /* 80 / 1440 */
+    z-index: 10;
+    font-family: inherit;
+    font-size: clamp(20px, 2.78vw, 40px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #000;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    -webkit-text-stroke: 0;
+    text-align: left;
+    /* so the manual-copy fallback can actually select it */
+    -webkit-user-select: text;
+    user-select: text;
+  }
+  .email:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .email:focus-visible { outline: 2px solid #000; outline-offset: 6px; }
+
+  /* ── "Copied!" toast ── */
+  .toast {
+    position: fixed;
+    z-index: 11;
+    padding: 8px 14px;
+    background: #000;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: no-preference) {
+    .toast { transition: opacity 0.18s ease, transform 0.18s ease; }
+  }
+
+  /* ── Cow head = home button, floats top-right ── */
+  /* Adaptive logo: white artwork + difference blending inverts it against
+     whatever sits behind, per pixel. Black over the white/off-white page,
+     white over dark imagery or type, recomputed live while scrolling. */
+  .home-cow {
+    mix-blend-mode: difference;
+    position: fixed;
+    top: 28px;
+    right: 32px;
+    z-index: 10;
+    display: block;
+  }
+  .home-cow img {
+    width: 50px;
+    height: auto;
+    display: block;
+  }
+  /* Where supported, threshold the backdrop inside the cow silhouette instead
+     of inverting it: gives true black/white rather than a complementary tint
+     over saturated colour. Falls back to the difference blend above. */
+  @supports ((backdrop-filter: invert(1)) or (-webkit-backdrop-filter: invert(1))) and (mask-image: url(x.png)) {
+    .home-cow { mix-blend-mode: normal; }
+    .home-cow img { visibility: hidden; }
+    .home-cow::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      -webkit-backdrop-filter: grayscale(1) contrast(2000%) invert(1);
+      backdrop-filter: grayscale(1) contrast(2000%) invert(1);
+      -webkit-mask: url(images/cow-logo-white.png) center / contain no-repeat;
+      mask: url(images/cow-logo-white.png) center / contain no-repeat;
+    }
+  }
+  .home-cow:hover img { transform: rotate(-8deg); }
+  .home-cow:focus-visible { outline: 2px solid #000; outline-offset: 4px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .home-cow img { transition: transform 0.2s ease; }
+  }
+
+  @media (max-width: 700px) {
+    /* A portrait phone only shows ~31% of the photo's width. Anchored left
+       (the desktop crop) that window is empty grass, so shift to the subject:
+       keeps the figure fully in frame with the bicycle entering at the edge. */
+    .bg img { object-position: 46% 50%; }
+
+    .email {
+      top: 22px;
+      left: 20px;
+      /* bigger tap target for the page's one action, same visual position */
+      padding: 10px 8px;
+      margin: -10px -8px;
+      /* keep clear of the cow */
+      max-width: calc(100% - 92px);
+      word-break: break-word;
+    }
+    .home-cow { top: 22px; right: 20px; }
+    .home-cow img { width: 34px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg">
+    <img src="images/contact.jpg" alt="Figure crouching in tall grass beside a bicycle and roadside signposts">
+  </div>
+
+  <button class="email" type="button" data-email="jaspercurtis21@gmail.com"
+          aria-label="Copy email address jaspercurtis21@gmail.com to clipboard">jaspercurtis21@gmail.com</button>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <a class="home-cow" href="index.html" aria-label="Home">
+    <img src="images/cow-logo-white.png" alt="">
+  </a>
+
+  <script>
+    (function () {
+      var btn   = document.querySelector('.email');
+      var toast = document.querySelector('.toast');
+      var timer;
+
+      /* execCommand fallback: navigator.clipboard needs a secure context,
+         which file:// and plain http:// are not. */
+      function legacyCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;top:0;left:-9999px;opacity:0;';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        ta.remove();
+        return ok;
+      }
+
+      /* If we genuinely can't write to the clipboard, select the address so
+         the keyboard shortcut we're suggesting actually does something. */
+      function selectEmail() {
+        try {
+          var range = document.createRange();
+          range.selectNodeContents(btn);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        } catch (e) { /* selection unsupported — the text is still on screen */ }
+      }
+
+      function manualHint() {
+        selectEmail();
+        var mac = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
+        return 'Press ' + (mac ? '⌘C' : 'Ctrl+C') + ' to copy';
+      }
+
+      function show(message) {
+        var r = btn.getBoundingClientRect();
+        toast.textContent = message;
+        toast.style.left = Math.round(r.left) + 'px';
+        toast.style.top  = Math.round(r.bottom + 12) + 'px';
+        toast.classList.add('show');
+        clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove('show'); }, 1800);
+      }
+
+      btn.addEventListener('click', function () {
+        var email = btn.dataset.email;
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(email).then(
+            function () { show('Copied!'); },
+            function () { show(legacyCopy(email) ? 'Copied!' : manualHint()); }
+          );
+        } else {
+          show(legacyCopy(email) ? 'Copied!' : manualHint());
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jasper Curtis</title>
+<link rel="icon" href="images/cow-logo.png">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #14100f;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  /* ── Full-bleed portrait (grid is baked into the image) ── */
+  .bg {
+    position: fixed;
+    inset: 0;
+  }
+  .bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Figma sits the 1492×1024 portrait flush to the right edge of the
+       1440 frame (offset −52), so the crop is taken off the left. */
+    object-position: 100% 50%;
+    display: block;
+  }
+
+  /* ── Wordmark + nav ──
+     Positions are percentages of the 1440×1024 Figma frame so the
+     composition holds as the viewport changes. */
+  .wordmark {
+    position: fixed;
+    top: 8.2%;    /* 84 / 1024 */
+    left: 4.17%;  /* 60 / 1440 */
+    font-size: clamp(28px, 4.44vw, 72px);
+    font-weight: 400;
+    color: #69d9ff;
+    -webkit-text-stroke: 1.5px #f985da;
+    text-decoration: none;
+    z-index: 10;
+  }
+
+  nav {
+    position: fixed;
+    top: 15.53%;   /* 159 / 1024 */
+    left: 69.31%;  /* 998 / 1440 */
+    display: flex;
+    gap: clamp(24px, 6.9vw, 100px);
+    z-index: 10;
+  }
+  nav a, nav span {
+    font-size: clamp(18px, 2.78vw, 45px);
+    font-weight: 700;
+    color: #96e5ff;
+    text-decoration: none;
+  }
+  nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  nav a:focus-visible, .wordmark:focus-visible {
+    outline: 2px solid #a7c9f1;
+    outline-offset: 4px;
+  }
+
+  /* ── Mobile portrait: rotate the image 90° to fill the screen ── */
+  @media (orientation: portrait) and (max-width: 900px) {
+    .bg {
+      width: 100vh;
+      height: 100vw;
+      transform: rotate(90deg) translateY(-100%);
+      transform-origin: top left;
+    }
+    .bg img { object-position: 50% 70%; }
+
+    /* iPhone frame: wordmark is 24px Bold and the same blue as the nav */
+    .wordmark {
+      top: 12px;
+      left: 12px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #96e5ff;
+      -webkit-text-stroke-width: 1px;
+    }
+    nav {
+      top: 58px;
+      left: 46.7%;   /* 182 / 390 */
+      right: auto;
+      gap: 34px;
+    }
+    nav a, nav span { font-size: 24px; padding: 8px 4px; margin: -8px -4px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg">
+    <img src="images/home.jpg" alt="Portrait with cyan grid overlay">
+  </div>
+
+  <a class="wordmark" href="index.html">Jasper Curtis.com</a>
+
+  <nav>
+    <a href="work.html">Work</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+</body>
+</html>

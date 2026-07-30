@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work — Jasper Curtis</title>
+<link rel="icon" href="images/cow-logo.png">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: #fff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #111;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Proportions taken from the 1164×720 Figma frame: nav spans
+     x=80…1079 (85.8% centred) with its baseline at y=47 (6.5%). */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    width: min(85.8%, 999px);
+    margin: 6.5% auto 0;
+  }
+  nav a, nav span {
+    font-size: clamp(18px, 3.44vw, 40px);
+    font-weight: 700;
+    color: #000;
+    text-decoration: none;
+  }
+  nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  nav a:focus-visible { outline: 2px solid #111; outline-offset: 4px; }
+
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px 72px;
+  }
+  main img {
+    /* 812 / 1164 of the frame width, centred as in Figma */
+    width: min(69.8%, 812px);
+    height: auto;
+    display: block;
+  }
+
+  /* ── Cow head = home button, floats top-right while scrolling ── */
+  /* Adaptive logo: white artwork + difference blending inverts it against
+     whatever sits behind, per pixel. Black over the white/off-white page,
+     white over dark imagery or type, recomputed live while scrolling. */
+  .home-cow {
+    mix-blend-mode: difference;
+    position: fixed;
+    top: 28px;
+    right: 32px;
+    z-index: 10;
+  }
+  .home-cow img {
+    width: 50px;
+    height: auto;
+    display: block;
+  }
+  /* Where supported, threshold the backdrop inside the cow silhouette instead
+     of inverting it: gives true black/white rather than a complementary tint
+     over saturated colour. Falls back to the difference blend above. */
+  @supports ((backdrop-filter: invert(1)) or (-webkit-backdrop-filter: invert(1))) and (mask-image: url(x.png)) {
+    .home-cow { mix-blend-mode: normal; }
+    .home-cow img { visibility: hidden; }
+    .home-cow::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      -webkit-backdrop-filter: grayscale(1) contrast(2000%) invert(1);
+      backdrop-filter: grayscale(1) contrast(2000%) invert(1);
+      -webkit-mask: url(images/cow-logo-white.png) center / contain no-repeat;
+      mask: url(images/cow-logo-white.png) center / contain no-repeat;
+    }
+  }
+  .home-cow:hover img { transform: rotate(-8deg); }
+  .home-cow:focus-visible { outline: 2px solid #111; outline-offset: 4px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .home-cow img { transition: transform 0.2s ease; }
+  }
+
+  @media (max-width: 700px) {
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      width: auto;
+      margin: 28px 0 0 28px;
+    }
+    /* padding+negative margin grows the tap target without moving the text */
+    nav a, nav span { font-size: 20px; padding: 11px 0; margin: -11px 0; }
+    main { padding: 24px 20px 48px; }
+    main img { width: 100%; }
+    .home-cow { top: 22px; right: 20px; }
+    .home-cow img { width: 34px; }
+  }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a href="branding.html">Branding</a>
+    <a href="photo.html">Photo</a>
+    <a href="fabrication.html">Fabrication</a>
+  </nav>
+
+  <main>
+    <img src="images/cow-art.png" alt="Mirrored cow drawing with ear tags">
+  </main>
+
+  <a class="home-cow" href="index.html" aria-label="Home">
+    <img src="images/cow-logo-white.png" alt="">
+  </a>
+
+</body>
+</html>
