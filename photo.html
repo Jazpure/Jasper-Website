@@ -63,6 +63,8 @@
   /* ── Figures: centred, label flush with the image's left edge ── */
   figure { margin: 0 auto; }
   figure + figure { margin-top: var(--item-gap); }
+  /* a figure that follows a section blurb keeps the same rhythm */
+  .blurb + figure { margin-top: var(--item-gap); }
   figure img {
     display: block;
     width: 100%;
@@ -193,6 +195,9 @@
         <img src="images/marshall.jpg" width="1300" height="2032" alt="Shoulder and neck scattered with pressed flowers">
       </figure>
       <p class="blurb">Flowers explores photography as a practice of object making. Each of the shots consists of multiple print outs submerged in water using real flowers- photos of photos.</p>
+      <figure class="w-marshall">
+        <img src="images/sheep.jpg" width="1500" height="1536" alt="Child in a plaid shirt standing beside a sheep in a wooden stall">
+      </figure>
     </section>
 
     <section id="targets">
