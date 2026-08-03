@@ -126,10 +126,11 @@
       mask: url(images/cow-logo-white.png) center / contain no-repeat;
     }
   }
-  .home-cow:hover img { transform: rotate(-8deg); }
+  .home-cow:hover,
+  .home-cow.tapped { transform: rotate(-8deg); }
   .home-cow:focus-visible { outline: 2px solid #000; outline-offset: 4px; }
   @media (prefers-reduced-motion: no-preference) {
-    .home-cow img { transition: transform 0.2s ease; }
+    .home-cow { transition: transform 0.2s ease; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -262,6 +263,24 @@
       requestAnimationFrame(function () { requestAnimationFrame(jump); });
       setTimeout(jump, 200);
     });
+  </script>
+
+
+  <script>
+    /* Touch devices have no hover, so the tilt fires on tap and the link
+       follows once it finishes. Pointer devices keep the CSS :hover. */
+    (function () {
+      var cow = document.querySelector('.home-cow');
+      if (!cow || !window.matchMedia('(hover: none)').matches) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      cow.addEventListener('click', function (e) {
+        if (cow.dataset.going) return;
+        e.preventDefault();
+        cow.dataset.going = '1';
+        cow.classList.add('tapped');
+        setTimeout(function () { window.location.href = cow.href; }, 220);
+      });
+    })();
   </script>
 
 </body>
