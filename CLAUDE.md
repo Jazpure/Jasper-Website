@@ -22,12 +22,13 @@ stylesheet: every page is self-contained.
 | File | |
 |---|---|
 | `index.html` | Home |
-| `work.html` | Work index → Branding / Photo / Fabrication |
-| `branding.html` | Branding → Underberg / Band-Aid |
+| `work.html` | Work index → Branding and Design / Photo / Fabrication |
+| `branding.html` | Branding and Design → Underberg, plus My Map and Glyphics (their own sites) |
 | `photo.html` | Photo — Flowers, Target Series, portraits, Find the Broken Bone |
 | `fabrication.html` | Fabrication cover (names over a photo) |
 | `fabrication-projects.html` | Fabrication write-ups |
-| `underberg.html`, `band-aid.html` | Project pages |
+| `underberg.html` | Project page |
+| `band-aid.html` | Project page, no longer linked from the site |
 | `contact.html` | Contact, click-to-copy email |
 
 `images/` holds photography, `fonts/` self-hosted webfonts.

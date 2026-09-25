@@ -8,13 +8,13 @@ self-hosted fonts.
 | File | |
 |---|---|
 | `index.html` | Home |
-| `work.html` | Work index → Branding / Photo / Fabrication |
-| `branding.html` | Branding → Underberg / Band-Aid |
+| `work.html` | Work index → Branding and Design / Photo / Fabrication |
+| `branding.html` | Branding and Design → Underberg, My Map, Glyphics |
 | `photo.html` | Photo — Flowers, Targets, Find the Broken Bone |
 | `fabrication.html` | Fabrication landing |
 | `fabrication-projects.html` | Fabrication write-ups (Mel Kendrick, Nick Cave, Christopher Wool) |
 | `underberg.html` | Underberg marketing project |
-| `band-aid.html` | Band-Aid branding project |
+| `band-aid.html` | Band-Aid branding project (no longer linked) |
 | `contact.html` | Contact — click the address to copy it |
 
 `images/` holds the photography, `fonts/` the self-hosted webfonts.
