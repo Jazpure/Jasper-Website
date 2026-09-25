@@ -16,7 +16,7 @@ screenshots — the frames carry exact positions, colours and crops.
 
 ## Structure
 
-Nine standalone pages, each with its own inline `<style>`. There is no shared
+Eight standalone pages, each with its own inline `<style>`. There is no shared
 stylesheet: every page is self-contained.
 
 | File | |
@@ -28,15 +28,14 @@ stylesheet: every page is self-contained.
 | `fabrication.html` | Fabrication cover (names over a photo) |
 | `fabrication-projects.html` | Fabrication write-ups |
 | `underberg.html` | Project page |
-| `band-aid.html` | Project page, no longer linked from the site |
 | `contact.html` | Contact, click-to-copy email |
 
 `images/` holds photography, `fonts/` self-hosted webfonts.
 
 **Duplication is deliberate but real.** The cow-logo block is ~38 lines repeated
-across 8 pages. A change to it means editing all 8. This was a considered choice —
+across 7 pages. A change to it means editing all 7. This was a considered choice —
 self-contained pages can't break globally — but if you're making the same edit
-everywhere, say so rather than silently doing it eight times.
+everywhere, say so rather than silently doing it seven times.
 
 ## Conventions
 

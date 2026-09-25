@@ -14,7 +14,6 @@ self-hosted fonts.
 | `fabrication.html` | Fabrication landing |
 | `fabrication-projects.html` | Fabrication write-ups (Mel Kendrick, Nick Cave, Christopher Wool) |
 | `underberg.html` | Underberg marketing project |
-| `band-aid.html` | Band-Aid branding project (no longer linked) |
 | `contact.html` | Contact — click the address to copy it |
 
 `images/` holds the photography, `fonts/` the self-hosted webfonts.
@@ -43,7 +42,7 @@ Serve over HTTP rather than opening the files directly:
 Then visit <http://localhost:8000>.
 
 Opening a page as `file://` makes browsers treat the `@font-face` files as
-cross-origin and block them, so the script wordmarks on Branding, Band-Aid, and
+cross-origin and block them, so the script wordmarks on Branding and
 Underberg fall back to a generic face. Over HTTP they load correctly.
 
 ## Fonts
@@ -53,7 +52,6 @@ SIL Open Font License 1.1; the license and its copyright notices are bundled in
 `fonts/OFL.txt`, which the license requires be distributed with the fonts.
 
 - Monsieur La Doulaise — Branding
-- Playfair Display, DM Sans — Band-Aid
 - UnifrakturMaguntia, Cormorant Garamond, Courier Prime — Underberg
 
 Everything else uses the system Helvetica Neue stack.
